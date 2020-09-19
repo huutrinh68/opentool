@@ -64,6 +64,8 @@ class BaseRunner(metaclass=ABCMeta):
         if torch.cuda.is_available():
             if len(conf.device_ids) == 1:
                 self._device = torch.device('cuda:' + str(self.conf.device_ids[0]))
+            else:
+                self._device = torch.device('cuda:0')
         else:
             self._device = torch.device('cpu')
 
