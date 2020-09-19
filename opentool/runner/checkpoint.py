@@ -34,7 +34,7 @@ def weights_to_cpu(state_dict):
     return state_dict_cpu
 
 
-def save_checkpoint(model, filename, optimizer=None, meta=None):
+def save_checkpoint(model, filename, device_ids, optimizer=None, meta=None):
     """Save checkpoint to file.
 
     The checkpoint will have 3 fields: ``meta``, ``state_dict`` and
@@ -54,9 +54,14 @@ def save_checkpoint(model, filename, optimizer=None, meta=None):
 
     opentool.mkdir_or_exist(osp.dirname(filename))
 
+    if len(device_ids) > 1:
+        state_dict = model.module.state_dict()
+    else:
+        state_dict = model.state_dict()
+
     checkpoint = {
         'meta': meta,
-        'state_dict': weights_to_cpu(model.state_dict())
+        'state_dict': weights_to_cpu(state_dict)
     }
     # save optimizer state dict in the checkpoint
     if isinstance(optimizer, Optimizer):

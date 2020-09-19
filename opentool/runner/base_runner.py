@@ -62,9 +62,10 @@ class BaseRunner(metaclass=ABCMeta):
         self._max_steps = 0
         self.writer = SummaryWriter(work_dir)
         if torch.cuda.is_available():
-            self.device = torch.device('cuda:' + self.conf.device)
+            if len(conf.device_ids) == 1:
+                self._device = torch.device('cuda:' + self.conf.device_ids[0])
         else:
-            self.device = torch.device('cpu')
+            self._device = torch.device('cpu')
 
     @property
     def epoch(self):
@@ -90,6 +91,11 @@ class BaseRunner(metaclass=ABCMeta):
     def max_steps(self):
         """int: Maximum training iterations."""
         return self._max_steps
+
+    @property
+    def device(self):
+        """tensor: cuda or cpu"""
+        return self._device
 
     @abstractmethod
     def init(self):
