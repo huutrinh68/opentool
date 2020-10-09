@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="opentool",
-    version="0.0.12",
+    version="0.0.13",
     author="huutrinh",
     author_email="trinhsp89@gmail.com",
     description="Tools for AI project",
