@@ -61,7 +61,10 @@ class BaseRunner(metaclass=ABCMeta):
         self._max_epochs = 0
         self._max_steps = 0
         self.writer = SummaryWriter(work_dir)
-        self._device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        if torch.cuda.is_available():
+            self._device = torch.device('cuda:' + str(self.conf.device_ids[0]))
+        else:
+            self._device = torch.device('cpu')
 
     @property
     def epoch(self):
